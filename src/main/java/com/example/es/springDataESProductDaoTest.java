@@ -42,10 +42,7 @@ public class springDataESProductDaoTest {
     @Test
     public void findALLProduct() {
         Iterable<Product> products = productDao.findAll();
-        for (Product product : products) {
-            System.out.print(product);
-        }
-
+        products.forEach(product -> System.out.print(product));
     }
 
 }
