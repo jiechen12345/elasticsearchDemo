@@ -96,6 +96,15 @@ public class springDataESProductDaoTest {
         products.forEach(product -> System.out.println(product));
     }
 
+    //任何屬性有該值都能查到
+    @Test
+    public void queryStringQuery() {
+        QueryStringQueryBuilder queryStringQueryBuilder = QueryBuilders.queryStringQuery("25000.0");
+        Iterable<Product> products = productDao.search(queryStringQueryBuilder);
+        System.out.println("*************************************");
+        products.forEach(product -> System.out.println(product));
+    }
+
     //全部查詢+分頁
     @Test
     public void findByPageable() {
