@@ -1,12 +1,15 @@
 package com.example.es;
 
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -30,27 +33,23 @@ public class springDataESProductDaoTest {
     @Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    //新增  POSTMAN, GET http://localhost:9200/product/_doc/2
+    Logger logger = LoggerFactory.getLogger(springDataESProductDaoTest.class);
+
+
+    //新增  POSTMAN, GET http://localhost:9200/product/_doc/1
     @Test
     public void createProduct() {
-        Product product = new Product(2L, "iphone 15", 24000.0, "手機", "iphone15.jpg");
+        Product product = new Product(1L, "iphone 1", 23000.0, "手機", "iphone1.jpg");
         productDao.save(product);
     }
 
-    //修改 POSTMAN, GET http://localhost:9200/product/_doc/2
-    @Test
-    public void updateProduct() {
-        Product product = new Product();
-        product.setId(2L);
-        product.setPrice(25000.0);
-        productDao.save(product);
-    }
 
     //查詢
     @Test
     public void findProduct() {
-        Product product = productDao.findById(2L).get();
-        System.out.println(product);
+        Product product = productDao.findById(1L).get();
+        logger.error(product.toString());
+//        System.out.println(product);
     }
 
     //查詢
@@ -60,11 +59,26 @@ public class springDataESProductDaoTest {
         products.forEach(product -> System.out.println(product));
     }
 
-    //删除 POSTMAN, GET http://localhost:9200/product/_doc/2
+    //修改 POSTMAN, GET http://localhost:9200/product/_doc/1
+    @Test
+    public void updateProduct() {
+        //對比差異
+        Product product = new Product();
+//        product = productDao.findById(1L).get();
+        product.setId(1L);
+        product.setPrice(21000.0);
+        product.setCategory("手機");
+        product.setImages("iphone1.jpg");
+        productDao.save(product);
+    }
+
+
+    //删除 POSTMAN, GET http://localhost:9200/product/_doc/1
     @Test
     public void delete() {
         Product product = new Product();
-        product.setId(2L);
+        //        product = productDao.findById(1L).get();
+        product.setId(1L);
         productDao.delete(product);
     }
 
@@ -95,6 +109,12 @@ public class springDataESProductDaoTest {
         System.out.println("*************************************");
         products.forEach(product -> System.out.println(product));
     }
+    //SearchRequest searchRequest = new SearchRequest();   第一層
+    //SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder(); 第二層
+   // TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("category", "手機"); 第三層
+    //searchSourceBuilder.query(termQueryBuilder); 第三層給第二層
+    //searchRequest.source(searchSourceBuilder); 第二層給第一層
+   // SearchResponse searchResponse = productDao.search(searchRequest);  包了三層回傳的還不是List
 
     //任何屬性有該值都能查到
     @Test
@@ -111,11 +131,12 @@ public class springDataESProductDaoTest {
         //排序方式
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         int currentPage = 0;//當前頁
-        int pageSize = 5;//每頁幾筆
+        int pageSize = 15;//每頁幾筆
         //宣告分頁物件
         PageRequest pageRequest = PageRequest.of(currentPage, pageSize, sort);
         //進行查詢
         Page<Product> productPage = productDao.findAll(pageRequest);
+        System.out.println("*************************************");
         productPage.getContent().forEach(product -> System.out.println(product));
     }
 
@@ -130,6 +151,7 @@ public class springDataESProductDaoTest {
         TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("category", "手機");
 
         Iterable<Product> products = productDao.search(termQueryBuilder, pageRequest);
+        System.out.println("*************************************");
         products.forEach(product -> System.out.println(product));
     }
 

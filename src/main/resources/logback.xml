@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <!-- <jmxConfigurator/> -->
+    <contextName>logback</contextName>
+
+    <property name="log.path" value="C:\\123456\\logback.log" />
+
+    <property name="log.pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID} --- [%15.15t] %-40.40logger{39} : %m%n" />
+
+
+    <appender name="file"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}</file>
+
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+            <fileNamePattern>info-%d{yyyy-MM-dd}-%i.log
+            </fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+
+    </appender>
+
+    <appender name="logstash"
+              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>192.168.183.133:4560</destination>
+        <!-- encoder-->
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+            <!--<customFields>{"appname":"myapp"}</customFields>-->
+        </encoder>
+        <!-- <destination>destination1.domain.com:4560</destination>
+            <destination>destination2.domain.com:4560</destination>
+            <destination>destination3.domain.com:4560</destination> -->
+        <connectionStrategy>
+            <roundRobin>
+                <connectionTTL>5 minutes</connectionTTL>
+            </roundRobin>
+        </connectionStrategy>
+    </appender>
+
+
+    <root level="INFO">
+        <!-- <appender-ref ref="file" /> -->
+        <!--<appender-ref ref="logstash" />-->
+        <appender-ref ref="file" />
+        <!-- <appender-ref ref="LOGSTASH" /> -->
+    </root>
+    <root level="ERROR">
+        <!-- <appender-ref ref="file" /> -->
+        <appender-ref ref="logstash" />
+        <!-- <appender-ref ref="LOGSTASH" /> -->
+    </root>
+
+</configuration>

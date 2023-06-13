@@ -38,7 +38,12 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
+        <!--裡面包含logback 不需要另外引入-->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.3</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -58,6 +63,10 @@
             <version>2.3.1.RELEASE</version>
             <scope>compile</scope>
         </dependency>
+
+
+
+
 
         <dependency>
             <groupId>junit</groupId>
