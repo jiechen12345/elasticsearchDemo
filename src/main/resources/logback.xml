@@ -33,22 +33,22 @@
 
     </appender>
 
-    <appender name="logstash"
-              class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>192.168.183.133:4560</destination>
-        <!-- encoder-->
-        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
-            <!--<customFields>{"appname":"myapp"}</customFields>-->
-        </encoder>
-        <!-- <destination>destination1.domain.com:4560</destination>
-            <destination>destination2.domain.com:4560</destination>
-            <destination>destination3.domain.com:4560</destination> -->
-        <connectionStrategy>
-            <roundRobin>
-                <connectionTTL>5 minutes</connectionTTL>
-            </roundRobin>
-        </connectionStrategy>
-    </appender>
+    <!--<appender name="logstash"-->
+              <!--class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+        <!--<destination>192.168.183.133:4560</destination>-->
+        <!--&lt;!&ndash; encoder&ndash;&gt;-->
+        <!--<encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">-->
+            <!--&lt;!&ndash;<customFields>{"appname":"myapp"}</customFields>&ndash;&gt;-->
+        <!--</encoder>-->
+        <!--&lt;!&ndash; <destination>destination1.domain.com:4560</destination>-->
+            <!--<destination>destination2.domain.com:4560</destination>-->
+            <!--<destination>destination3.domain.com:4560</destination> &ndash;&gt;-->
+        <!--<connectionStrategy>-->
+            <!--<roundRobin>-->
+                <!--<connectionTTL>5 minutes</connectionTTL>-->
+            <!--</roundRobin>-->
+        <!--</connectionStrategy>-->
+    <!--</appender>-->
 
 
     <root level="INFO">
@@ -57,10 +57,10 @@
         <appender-ref ref="file" />
         <!-- <appender-ref ref="LOGSTASH" /> -->
     </root>
-    <root level="ERROR">
-        <!-- <appender-ref ref="file" /> -->
-        <appender-ref ref="logstash" />
-        <!-- <appender-ref ref="LOGSTASH" /> -->
-    </root>
+    <!--<root level="ERROR">-->
+        <!--&lt;!&ndash; <appender-ref ref="file" /> &ndash;&gt;-->
+        <!--<appender-ref ref="logstash" />-->
+        <!--&lt;!&ndash; <appender-ref ref="LOGSTASH" /> &ndash;&gt;-->
+    <!--</root>-->
 
 </configuration>

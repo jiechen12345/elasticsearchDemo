@@ -16,8 +16,9 @@ import javax.sound.sampled.Port;
  * Created by JieChen on 2023/6/8.
  */
 @Component
-@ConfigurationProperties(prefix="elasticsearch")
 @Configuration
+@ConfigurationProperties(prefix="elasticsearch")
+
 @Data
 public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     private String host ;

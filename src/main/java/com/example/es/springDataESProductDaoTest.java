@@ -43,7 +43,6 @@ public class springDataESProductDaoTest {
         productDao.save(product);
     }
 
-
     //查詢
     @Test
     public void findProduct() {
@@ -144,12 +143,25 @@ public class springDataESProductDaoTest {
      * 條件查詢加分頁
      */
     @Test
+    public void matchQueryByPage() {
+        int currentPage = 0;
+        int pageSize = 5;
+        PageRequest pageRequest = PageRequest.of(currentPage, pageSize);
+        MatchQueryBuilder matchQueryBuilder=   QueryBuilders.matchQuery("title", "iphone");
+        Iterable<Product> products = productDao.search(matchQueryBuilder, pageRequest);
+        System.out.println("*************************************");
+        products.forEach(product -> System.out.println(product));
+    }
+
+    /**
+     * 條件查詢加分頁
+     */
+    @Test
     public void termQueryByPage() {
         int currentPage = 0;
         int pageSize = 5;
         PageRequest pageRequest = PageRequest.of(currentPage, pageSize);
         TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("category", "手機");
-
         Iterable<Product> products = productDao.search(termQueryBuilder, pageRequest);
         System.out.println("*************************************");
         products.forEach(product -> System.out.println(product));
